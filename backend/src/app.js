@@ -22,7 +22,12 @@ import { ApiError } from './utils/ApiError.js'
 
 //routes declaration
 app.use("/api/v1/users", userRouter)
-
+app.get("/api/health", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "Backend is running 🚀"
+  });
+});
 // http://localhost:8000/api/v1/users/register
 
 
