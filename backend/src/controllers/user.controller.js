@@ -126,6 +126,10 @@ const loginUser = asyncHandler(async (req, res) => {
         throw new ApiError(401, "Invalid email or password");
     }
 
+    // Update last login timestamp
+    user.lastLogin = new Date();
+    await user.save({ validateBeforeSave: false });
+
     // Generate tokens
     const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(user._id);
 
