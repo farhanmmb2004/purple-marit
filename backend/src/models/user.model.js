@@ -4,7 +4,38 @@ import bcrypt from "bcrypt"
 
 const userSchema = new Schema(
     {
-        
+        fullName: {
+            type: String,
+            required: [true, 'Full name is required'],
+            trim: true,
+            minlength: [2, 'Full name must be at least 2 characters'],
+            maxlength: [100, 'Full name cannot exceed 100 characters']
+        },
+        email: {
+            type: String,
+            required: [true, 'Email is required'],
+            unique: true,
+            lowercase: true,
+            trim: true,
+            match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please provide a valid email']
+        },
+        password: {
+            type: String,
+            required: [true, 'Password is required'],
+            minlength: [6, 'Password must be at least 6 characters']
+        },
+        role: {
+            type: String,
+            enum: ['user', 'admin'],
+            default: 'user'
+        },
+        isActive: {
+            type: Boolean,
+            default: true
+        },
+        refreshToken: {
+            type: String
+        }
     },
     {
         timestamps: true
@@ -14,7 +45,7 @@ const userSchema = new Schema(
 userSchema.pre("save", async function (next) {
     if(!this.isModified("password")) return next();
 
-    this.password = bcrypt.hash(this.password, 10)
+    this.password = await bcrypt.hash(this.password, 10)
     next()
 })
 
@@ -27,8 +58,8 @@ userSchema.methods.generateAccessToken = function(){
         {
             _id: this._id,
             email: this.email,
-            username: this.username,
-            fullName: this.fullName
+            fullName: this.fullName,
+            role: this.role
         },
         process.env.ACCESS_TOKEN_SECRET,
         {
