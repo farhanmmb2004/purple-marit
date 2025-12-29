@@ -1,0 +1,23 @@
+import { Navigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
+import Spinner from '../Spinner/Spinner';
+
+const ProtectedRoute = ({ children, adminOnly = false }) => {
+  const { isAuthenticated, isAdmin, loading } = useAuth();
+
+  if (loading) {
+    return <Spinner fullPage />;
+  }
+
+  if (!isAuthenticated()) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (adminOnly && !isAdmin()) {
+    return <Navigate to="/profile" replace />;
+  }
+
+  return children;
+};
+
+export default ProtectedRoute;

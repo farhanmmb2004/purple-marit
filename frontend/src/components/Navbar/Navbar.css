@@ -1,0 +1,127 @@
+.navbar {
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navbar-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-brand a {
+  text-decoration: none;
+}
+
+.navbar-brand h2 {
+  color: #6f42c1;
+  margin: 0;
+  font-size: 20px;
+}
+
+.navbar-menu {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.nav-link {
+  color: #333;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 6px;
+  transition: all 0.3s;
+}
+
+.nav-link:hover {
+  background-color: #f8f9fa;
+  color: #6f42c1;
+}
+
+.navbar-user {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-left: 24px;
+  border-left: 1px solid #e0e0e0;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.user-name {
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+}
+
+.user-role {
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.badge-admin {
+  background-color: #6f42c1;
+  color: white;
+}
+
+.badge-user {
+  background-color: #17a2b8;
+  color: white;
+}
+
+.logout-btn {
+  padding: 8px 16px;
+  min-width: auto;
+}
+
+@media (max-width: 768px) {
+  .navbar-container {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .navbar-menu {
+    width: 100%;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .navbar-links {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .navbar-user {
+    width: 100%;
+    justify-content: space-between;
+    padding-left: 0;
+    border-left: none;
+    padding-top: 16px;
+    border-top: 1px solid #e0e0e0;
+  }
+
+  .user-info {
+    align-items: flex-start;
+  }
+}
