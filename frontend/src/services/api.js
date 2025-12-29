@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { toast } from 'react-toastify';
 import API_BASE_URL from '../config/api';
 
 // Create axios instance
@@ -10,13 +11,30 @@ const api = axios.create({
   },
 });
 
-// Request interceptor to add token
+// Track active toast to avoid duplicates
+let wakeUpToastId = null;
+
+// Request interceptor to add token and handle slow server wake-up
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('accessToken');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+
+    // Set up a timeout to show wake-up message after 5 seconds
+    config.wakeUpTimer = setTimeout(() => {
+      if (!wakeUpToastId) {
+        wakeUpToastId = toast.info(
+          '⏳ Server is waking up from sleep... This may take up to 50 seconds on first request.',
+          {
+            autoClose: false, // Keep it open until request completes
+            closeButton: true,
+          }
+        );
+      }
+    }, 5000);
+
     return config;
   },
   (error) => {
@@ -24,10 +42,29 @@ api.interceptors.request.use(
   }
 );
 
-// Response interceptor to handle errors
+// Response interceptor to handle errors and clear wake-up timer
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    // Clear the wake-up timer and dismiss toast if shown
+    if (response.config.wakeUpTimer) {
+      clearTimeout(response.config.wakeUpTimer);
+    }
+    if (wakeUpToastId) {
+      toast.dismiss(wakeUpToastId);
+      wakeUpToastId = null;
+    }
+    return response;
+  },
   async (error) => {
+    // Clear the wake-up timer and dismiss toast if shown
+    if (error.config?.wakeUpTimer) {
+      clearTimeout(error.config.wakeUpTimer);
+    }
+    if (wakeUpToastId) {
+      toast.dismiss(wakeUpToastId);
+      wakeUpToastId = null;
+    }
+
     const originalRequest = error.config;
 
     // If 401 and not already retried, try to refresh token
