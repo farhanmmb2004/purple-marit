@@ -33,6 +33,10 @@ const userSchema = new Schema(
             type: Boolean,
             default: true
         },
+        lastLogin: {
+            type: Date,
+            default: null
+        },
         refreshToken: {
             type: String
         }
