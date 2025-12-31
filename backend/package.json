@@ -1,7 +1,7 @@
 {
-  "name": "chai-backend",
+  "name": "purple-merit-backend",
   "version": "1.0.0",
-  "description": "a backend at chai aur code channel - youtube",
+  "description": "Assinment of Backend purple merit internship",
   "type": "module",
   "main": "index.js",
   "scripts": {
@@ -12,7 +12,7 @@
     "backend",
     "chai"
   ],
-  "author": "Hitesh Choudhary",
+  "author": "farhanmmb2004",
   "license": "ISC",
   "devDependencies": {
     "nodemon": "^3.0.1",
